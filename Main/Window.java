@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import General.GlobalVars;
 
 public class Window extends WindowAdapter {
+    
     private Game game;
     private GlobalVars GV;
     public Window(String name, Game game, GlobalVars GV, int width, int height){

@@ -2,7 +2,6 @@ package Game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -26,7 +25,7 @@ public class Zombie extends GameObject {
     public void render(Graphics2D g) {
         g.setColor(Color.red);
         if(body!=null)g.fill(body);
-        if(getHitBox()!=null) g.draw(getHitBox());
+        //if(getHitBox()!=null) g.draw(getHitBox());
     }
 
     public void tick() {

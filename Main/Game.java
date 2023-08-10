@@ -1,15 +1,10 @@
 package Main;
 
 import General.*;
-import Game.GameHandler;
 
 import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Game extends Canvas implements Runnable{
     private Thread thread;

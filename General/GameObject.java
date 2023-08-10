@@ -1,12 +1,9 @@
 package General;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-import org.w3c.dom.events.MouseEvent;
 
 public abstract class GameObject {
     protected double x;

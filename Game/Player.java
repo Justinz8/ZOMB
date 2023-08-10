@@ -1,7 +1,6 @@
 package Game;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
@@ -24,7 +23,7 @@ public class Player extends GameObject{
         initBody();
         g.setColor(Color.green);
         if(body!=null)g.fill(body);
-        if(getHitBox()!=null) g.draw(getHitBox());
+        //if(getHitBox()!=null) g.draw(getHitBox());
         // g.rotate(rotation, x+12.5, y+25);
         // g.fillRect((Integer)x, (Integer)y, 25, 50);
         // g.rotate(-rotation, x+12.5, y+25);
