@@ -32,6 +32,8 @@ public class GameHandler extends Handler {
         GV.GO.add(new Player(400, 200, 0, 0, GameObjectID.Player, GV));
         GV.GO.add(new Zombie(400, 100, 0, 0, GameObjectID.Zombie, GV, 2.5));
         GV.GO.add(new Zombie(400, 400, 0, 0, GameObjectID.Zombie, GV, 2.5));
+        GV.GO.add(new Zombie(400, 600, 0, 0, GameObjectID.Zombie, GV, 2.5));
+        GV.GO.add(new Zombie(400, 500, 0, 0, GameObjectID.Zombie, GV, 2.5));
     }
     
 }

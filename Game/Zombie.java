@@ -12,54 +12,71 @@ import General.*;
 public class Zombie extends GameObject {
 
     private GlobalVars GV;
-    private double rotation;
     private double speed;
     private Shape body;
+    private double width1;
+    private double width2;
+    private double height1;
+    private double height2;
+    private AffineTransform at;
+    private double health;
 
     public Zombie(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV, double speed) {
         super(x, y, vx, vy, GOID);
         this.GV=GV;
         this.speed=speed;
+        at = new AffineTransform();
+        health = 100;
+    }
+
+    public void hit(double dmg){
+        health-=dmg;
     }
 
     public void render(Graphics2D g) {
         g.setColor(Color.red);
         if(body!=null)g.fill(body);
-        //if(getHitBox()!=null) g.draw(getHitBox());
+        if(getHitBox()!=null) g.draw(getHitBox());
     }
 
     public void tick() {
+        if(health<=0){
+            GV.GO.remove(this);
+            return;
+        }
         initBody();
         
-
         velx = Math.cos(rotation)*speed;
         vely = Math.sin(rotation)*speed;
 
-
-
         x+=velx;
         y+=vely;
+        
+        width2 = (ogbody.getBounds2D()).getWidth();
+        height2 = (ogbody.getBounds2D()).getHeight();
 
-        AffineTransform at = new AffineTransform();
+        
         rotation = Math.atan2(GV.playerY-y, GV.playerX-x);
-        at.rotate(rotation, x+12.5, y+25);
-        initBody();
-        body=at.createTransformedShape(ogbody);
-        setHitBox((Rectangle2D.Double)body.getBounds2D());
-        at.rotate(-rotation, x+12.5, y+25);
+        rotation(at, x+width2/2.0, y+height2/2.0);
+        width1 = this.getHitBox().width;
+        height1 = this.getHitBox().height;
+        collision();
+        rotation(at, x+width2/2.0, y+height2/2.0);
+    }
+    public void rotation(AffineTransform at, double xaxis,double yaxis){ //rotates main body and updates hitbox
+                initBody();
+                at.rotate(rotation, xaxis, yaxis);
+                body=at.createTransformedShape(ogbody);
+                setHitBox((Rectangle2D.Double)body.getBounds2D());
+                at.rotate(-rotation, xaxis, yaxis);
+    }
 
-        double width1 = this.getHitBox().width;
-        double width2 = (ogbody.getBounds2D()).getWidth();
-        double height1 = this.getHitBox().height;
-        double height2 = (ogbody.getBounds2D()).getHeight();
+    public void collision(){ 
         for(int i = 0; i<GV.GO.size(); i++){
             if(this==GV.GO.get(i)) continue;
             if(GV.GO.get(i).getHitBox()==null) continue;
             //System.out.println(GV.GO.get(i).getHitBox().intersects(getHitBox()));
             if(GV.GO.get(i).getHitBox().intersects(getHitBox())){
-
-
-                
                 //going left and hitting left target
                 double degreeL = getHitBox().getMinX()-GV.GO.get(i).getHitBox().getMaxX()+speed;
                 degreeL=(degreeL<0?degreeL*-1:degreeL);
@@ -104,20 +121,13 @@ public class Zombie extends GameObject {
                 // x/=2.0;
                 // System.out.println(GV.GO.get(i).getHitBox().getMaxX()+" "+(this.getHitBox().width-(ogbody.getBounds2D()).getWidth())/2.0);
                 //System.out.println(GV.GO.get(i).getHitBox().getMaxX()+" "+(at.createTransformedShape(new Rectangle2D.Double(GV.GO.get(i).getHitBox().getMaxX()+(width1-width2)/2.0, y, 25, 50))).getBounds2D().getMinX()+" "+(width1-width2)/2.0);
-                initBody();
-                at.rotate(rotation, x+12.5, y+25);
-                body=at.createTransformedShape(ogbody);
-                setHitBox((Rectangle2D.Double)body.getBounds2D());
-                at.rotate(-rotation, x+12.5, y+25);
+                rotation(at, x+width2/2.0, y+height2/2.0);
                 //System.out.println(GV.GO.get(i).getHitBox().getMaxX()+" "+getHitBox().getMinX());
             }
         }
-        
-       
-
     }
 
-    @Override
+    
     public void initBody() {
         ogbody = new Rectangle2D.Double(x, y, 25, 50);
     }

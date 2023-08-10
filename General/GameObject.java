@@ -2,6 +2,7 @@ package General;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 
@@ -10,6 +11,7 @@ public abstract class GameObject {
 	protected double y;
 	protected double velx;
 	protected double vely;
+	protected double rotation;
     protected GameObjectID GOID;
 
 	protected Rectangle2D.Double hitbox;
@@ -32,6 +34,9 @@ public abstract class GameObject {
 	
 	public abstract void tick();
 
+	public void collision(){}
+
+	public void rotation(AffineTransform at, double xaxis,double yaxis){}
 
     public void keyTyped(int e) {}
 

@@ -10,8 +10,8 @@ import General.*;
 
 public class Player extends GameObject{
 
-    private double rotation;
     private int mx, my;
+    private boolean spawnTracer = false;
     private GlobalVars GV;
     public Player(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV) {
         super(x, y, vx, vy, GOID);
@@ -32,7 +32,10 @@ public class Player extends GameObject{
     @Override
     public void tick() {
         rotation = Math.atan2(my-y, mx-x);
-
+        if(spawnTracer){
+            GV.GO.add(new Tracer(x+12.5, y+25, 0, 0, GameObjectID.Player, 10, GV, mx, my));
+            spawnTracer=false;
+        }
         AffineTransform at = new AffineTransform();
         at.rotate(rotation, x+12.5, y+25);
         body=at.createTransformedShape(ogbody);
@@ -67,6 +70,9 @@ public class Player extends GameObject{
                 break;
             case KeyEvent.VK_LEFT:
                 velx=(double)-10;
+                break;
+            case KeyEvent.VK_SPACE:
+                spawnTracer=true;
                 break;
         }
     }
