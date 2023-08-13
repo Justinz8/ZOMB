@@ -17,7 +17,6 @@ public abstract class Handler {
         for(int i = 0; i<GO.size(); i++){
             GO.get(i).tick();
         }
-        if(GV.UpdatedScale==true) GV.UpdatedScale=false;
     }
     public abstract void init();
     public abstract void extraTick();

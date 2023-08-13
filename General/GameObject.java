@@ -17,6 +17,7 @@ public abstract class GameObject {
 	public double rotation;
     public GameObjectID GOID;
 	public GlobalVars GV;
+	public AffineTransform at;
 
 	public Rectangle2D.Double hitbox;
 
@@ -30,13 +31,11 @@ public abstract class GameObject {
 		vely=vy;
         this.GOID=GOID;
 		this.GV=GV;
-		UpdateScale();
+		at = new AffineTransform();
 	}
-	
-	public abstract void UpdateScale();
 
 	public void initBody(){
-		ogbody.translate((int)((x-ogbody.xpoints[0]/GV.scale)*GV.scale), (int)((y-ogbody.ypoints[0]/GV.scale)*GV.scale));
+		ogbody.translate((int)((x-ogbody.xpoints[0])), (int)((y-ogbody.ypoints[0])));
 	};
 	
 	public abstract void render(Graphics2D g);

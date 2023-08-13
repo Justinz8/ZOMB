@@ -17,27 +17,28 @@ public class Player extends GameObject{
     public Player(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV) {
         super(x, y, vx, vy, GOID, GV);
         Rifle p = new Rifle(0, 0, GameObjectID.Gun, GV);
+        int[] tempx = {(int)x, (int)(x+25*GV.scale), (int)(x+25*GV.scale), (int)x};
+        int[] tempy = {(int)y, (int)y, (int)(y+50*GV.scale), (int)(y+50*GV.scale)};
+        ogbody = new Polygon(tempx, tempy, tempx.length);
         EquippedGun=p;
         GV.GO.add(EquippedGun);
     }
 
-    public void UpdateScale(){
-        int[] tempx = {(int)x, (int)(x+25*GV.scale), (int)(x+25*GV.scale), (int)x};
-        int[] tempy = {(int)y, (int)y, (int)(y+50*GV.scale), (int)(y+50*GV.scale)};
-        ogbody = new Polygon(tempx, tempy, tempx.length);
-    }
 
 
     @Override
     public void render(Graphics2D g) {
         initBody();
         g.setColor(Color.green);
+
         if(body!=null)g.fill(body);
+        
         if(getHitBox()!=null) g.draw(getHitBox());
         g.setColor(Color.yellow);
         if(EquippedGun!=null&&EquippedGun.body!=null){
             g.fill(EquippedGun.body);
         } 
+
         // g.rotate(rotation, x+12.5, y+25);
         // g.fillRect((Integer)x, (Integer)y, 25, 50);
         // g.rotate(-rotation, x+12.5, y+25);
@@ -45,11 +46,9 @@ public class Player extends GameObject{
 
     @Override
     public void tick() {
-        if(GV.UpdatedScale) UpdateScale();
         initBody();
         rotation = Math.atan2(my-y, mx-x);
-        AffineTransform at = new AffineTransform();
-        at.rotate(rotation, (x+12.5)*GV.scale, (y+25)*GV.scale);
+        at.rotate(rotation, (x+12.5), (y+25));
         body=at.createTransformedShape(ogbody);
         if(EquippedGun!=null){
             EquippedGun.x=x+25;
@@ -57,12 +56,8 @@ public class Player extends GameObject{
             EquippedGun.initBody();
             EquippedGun.body=at.createTransformedShape(EquippedGun.ogbody);
         }
-
+        at.rotate(-rotation, (x+12.5), (y+25));
         Rectangle2D.Double temp = (Rectangle2D.Double)body.getBounds2D();
-        temp.x/=GV.scale;
-        temp.y/=GV.scale;
-        temp.width/=GV.scale;
-        temp.height/=GV.scale;
         //System.out.println(x+" "+y+" "+temp.x+" "+temp.y);
 
         setHitBox(temp);

@@ -43,7 +43,6 @@ public abstract class gun extends GameObject {
 
     public abstract void shoot();
 
-    public abstract void UpdateScale();
 
     @Override
     public abstract void render(Graphics2D g);
@@ -62,12 +61,10 @@ public abstract class gun extends GameObject {
 
     @Override
     public void tick(){
-        if(GV.UpdatedScale) UpdateScale();
         initBody();
         tickcounter++;
         if((double)tickcounter/Tools.amountOfTicks>=delay){
             AllowedShoot=true;
-            
             tickcounter=0;
         }
 

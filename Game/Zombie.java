@@ -27,7 +27,9 @@ public class Zombie extends GameObject {
         this.speed=speed;
         at = new AffineTransform();
         this.health = health;
-        UpdateScale();
+        int[] tempx = {(int)x, (int)(x+25), (int)(x+25), (int)x};
+        int[] tempy = {(int)y, (int)y, (int)(y+50), (int)(y+50)};
+        ogbody = new Polygon(tempx, tempy, tempx.length);
         rotation(at, x+width2/2.0, y+height2/2.0);
     }
 
@@ -42,7 +44,6 @@ public class Zombie extends GameObject {
     }
 
     public void tick() {
-        if(GV.UpdatedScale) UpdateScale();
         if(health<=0){
             GV.GO.remove(this);
             return;
@@ -71,15 +72,11 @@ public class Zombie extends GameObject {
     }
     public void rotation(AffineTransform at, double xaxis,double yaxis){ //rotates main body and updates hitbox
                 initBody();
-                at.rotate(rotation, xaxis*GV.scale, yaxis*GV.scale);
+                at.rotate(rotation, xaxis, yaxis);
                 body=at.createTransformedShape(ogbody);
                 Rectangle2D.Double temp = (Rectangle2D.Double)body.getBounds2D();
-                temp.x/=GV.scale;
-                temp.y/=GV.scale;
-                temp.width/=GV.scale;
-                temp.height/=GV.scale;
                 setHitBox(temp);
-                at.rotate(-rotation, xaxis*GV.scale, yaxis*GV.scale);
+                at.rotate(-rotation, xaxis, yaxis);
     }
 
     public void collision(){ 
@@ -136,13 +133,6 @@ public class Zombie extends GameObject {
                 //System.out.println(GV.GO.get(i).getHitBox().getMaxX()+" "+getHitBox().getMinX());
             }
         }
-    }
-
-    @Override
-    public void UpdateScale() {
-        int[] tempx = {(int)x, (int)(x+25*GV.scale), (int)(x+25*GV.scale), (int)x};
-        int[] tempy = {(int)y, (int)y, (int)(y+50*GV.scale), (int)(y+50*GV.scale)};
-        ogbody = new Polygon(tempx, tempy, tempx.length);
     }
     
 }

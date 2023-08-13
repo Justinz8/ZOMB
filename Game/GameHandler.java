@@ -47,7 +47,7 @@ public class GameHandler extends Handler {
 
     public void background(Graphics2D g) {
         g.setColor(Color.black);
-        g.fillRect(0, 0, Tools.WIDTH, Tools.HEIGHT);
+        g.fillRect(0, 0, (int)(Tools.WIDTH/GV.scale), (int)(Tools.HEIGHT/GV.scale));
     }
 
 

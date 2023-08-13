@@ -11,6 +11,9 @@ public class Pistol extends gun{
 
     public Pistol(double x, double y, GameObjectID GOID, GlobalVars GV) {
         super(x, y, 0, 0, GOID, GV, 1, false);
+        int[] tempx = {(int)x, (int)((x+10)*GV.scale), (int)((x+10)*GV.scale), (int)x};
+        int[] tempy = {(int)y, (int)y, (int)((y+5)*GV.scale), (int)((y+5)*GV.scale)};
+        ogbody = new Polygon(tempx, tempy, tempx.length);
     }
 
     @Override
@@ -28,12 +31,6 @@ public class Pistol extends gun{
 
     }
 
-    @Override
-    public void UpdateScale() {
-        int[] tempx = {(int)x, (int)((x+10)*GV.scale), (int)((x+10)*GV.scale), (int)x};
-        int[] tempy = {(int)y, (int)y, (int)((y+5)*GV.scale), (int)((y+5)*GV.scale)};
-        ogbody = new Polygon(tempx, tempy, tempx.length);
-    }
 
     
 }

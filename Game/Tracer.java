@@ -45,14 +45,11 @@ public class Tracer extends GameObject {
         this.counter=0.3;
         this.dmg=dmg;
         tickcounter=0;
-        length*=GV.scale;
         at = new AffineTransform();
 
         rotation = Math.atan2(y2-y, x2-x);
-        System.out.println(rotation);
 
-        
-
+    
         line = new Line2D.Double(x, y, Math.cos(rotation)*length+x, Math.sin(rotation)*length+y);
 
         double mindist = length;
@@ -77,9 +74,9 @@ public class Tracer extends GameObject {
         }
         if(pen!=0) mindist = length;
 
-        at.rotate(rotation, x*GV.scale, (y+0.5)*GV.scale);
-        body = at.createTransformedShape(new Rectangle2D.Double(x*GV.scale, y*GV.scale, mindist, 1));
-        at.rotate(-rotation, x*GV.scale, (y+0.5)*GV.scale);
+        at.rotate(rotation, x, (y+0.5));
+        body = at.createTransformedShape(new Rectangle2D.Double(x, y, mindist, 1));
+        at.rotate(-rotation, x, (y+0.5));
     }
 
     public void hitAction(Zombie n){
@@ -104,10 +101,6 @@ public class Tracer extends GameObject {
             tickcounter = 0;
             return;
         }
-    }
-
-    @Override
-    public void UpdateScale() {
     }
     
 }

@@ -4,11 +4,13 @@ import General.*;
 
 import java.awt.Canvas;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable{
     private Thread thread;
     private GlobalVars GV;
+    private AffineTransform at; 
 
 
     public Game(){
@@ -16,6 +18,7 @@ public class Game extends Canvas implements Runnable{
         GV.running=true;
         GV.scale = 1;
         GV.UpdatedScale=false;
+        at = new AffineTransform();
         new Window("ZOMB", this, GV, Tools.WIDTH, Tools.HEIGHT);
 
         this.addKeyListener(new KeyInput(GV));
@@ -74,6 +77,13 @@ public class Game extends Canvas implements Runnable{
         }
 
         Graphics2D g = (Graphics2D)bs.getDrawGraphics();
+        if(GV.UpdatedScale==true){
+            at.scale(1.0/at.getScaleX(), 1.0/at.getScaleY());
+            at.scale(GV.scale, GV.scale);
+            GV.UpdatedScale=false;
+            
+        }
+        g.transform(at);
 
         GV.HandlerList.get(GV.curPageID).render(g);
 
