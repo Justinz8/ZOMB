@@ -14,10 +14,13 @@ public class Game extends Canvas implements Runnable{
     public Game(){
         GV = new GlobalVars();
         GV.running=true;
+        GV.scale = 1;
+        GV.UpdatedScale=false;
         new Window("ZOMB", this, GV, Tools.WIDTH, Tools.HEIGHT);
 
         this.addKeyListener(new KeyInput(GV));
         this.addMouseMotionListener(new MouseActionInput(GV));
+        this.addMouseListener(new MouseInput(GV));
 
         thread = new Thread(this);
         thread.start();
@@ -27,7 +30,7 @@ public class Game extends Canvas implements Runnable{
         GV.ChangePage(PageID.Game);
 
         long lastTime = System.nanoTime();
-		double amountOfTicks = 30; //amount of ticks/s we want
+		double amountOfTicks = Tools.amountOfTicks; //amount of ticks/s we want
 		double delta = 0;
 		long timer = System.currentTimeMillis();
 		int frames = 0;

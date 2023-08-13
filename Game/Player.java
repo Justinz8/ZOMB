@@ -2,6 +2,7 @@ package Game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -11,19 +12,32 @@ import General.*;
 public class Player extends GameObject{
 
     private int mx, my;
-    private boolean spawnTracer = false;
-    private GlobalVars GV;
+    private gun EquippedGun;
+
     public Player(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV) {
-        super(x, y, vx, vy, GOID);
-        this.GV=GV;
+        super(x, y, vx, vy, GOID, GV);
+        Rifle p = new Rifle(0, 0, GameObjectID.Gun, GV);
+        EquippedGun=p;
+        GV.GO.add(EquippedGun);
     }
+
+    public void UpdateScale(){
+        int[] tempx = {(int)x, (int)(x+25*GV.scale), (int)(x+25*GV.scale), (int)x};
+        int[] tempy = {(int)y, (int)y, (int)(y+50*GV.scale), (int)(y+50*GV.scale)};
+        ogbody = new Polygon(tempx, tempy, tempx.length);
+    }
+
 
     @Override
     public void render(Graphics2D g) {
         initBody();
         g.setColor(Color.green);
         if(body!=null)g.fill(body);
-        //if(getHitBox()!=null) g.draw(getHitBox());
+        if(getHitBox()!=null) g.draw(getHitBox());
+        g.setColor(Color.yellow);
+        if(EquippedGun!=null&&EquippedGun.body!=null){
+            g.fill(EquippedGun.body);
+        } 
         // g.rotate(rotation, x+12.5, y+25);
         // g.fillRect((Integer)x, (Integer)y, 25, 50);
         // g.rotate(-rotation, x+12.5, y+25);
@@ -31,28 +45,44 @@ public class Player extends GameObject{
 
     @Override
     public void tick() {
+        if(GV.UpdatedScale) UpdateScale();
+        initBody();
         rotation = Math.atan2(my-y, mx-x);
-        if(spawnTracer){
-            GV.GO.add(new Tracer(x+12.5, y+25, 0, 0, GameObjectID.Player, 10, GV, mx, my));
-            spawnTracer=false;
-        }
         AffineTransform at = new AffineTransform();
-        at.rotate(rotation, x+12.5, y+25);
+        at.rotate(rotation, (x+12.5)*GV.scale, (y+25)*GV.scale);
         body=at.createTransformedShape(ogbody);
-        setHitBox((Rectangle2D.Double)body.getBounds2D());
+        if(EquippedGun!=null){
+            EquippedGun.x=x+25;
+            EquippedGun.y=y;
+            EquippedGun.initBody();
+            EquippedGun.body=at.createTransformedShape(EquippedGun.ogbody);
+        }
+
+        Rectangle2D.Double temp = (Rectangle2D.Double)body.getBounds2D();
+        temp.x/=GV.scale;
+        temp.y/=GV.scale;
+        temp.width/=GV.scale;
+        temp.height/=GV.scale;
+        //System.out.println(x+" "+y+" "+temp.x+" "+temp.y);
+
+        setHitBox(temp);
 
         x+=velx;
-        initBody();
         y+=vely;
+
+
         initBody();
-
-
 
         GV.playerX=x;
         GV.playerY=y;
     }
 
     public void mouseMoved(int mx, int my) {
+        this.mx=mx;
+        this.my=my;
+    }
+
+    public void mouseDragged(int mx, int my) {
         this.mx=mx;
         this.my=my;
     }
@@ -72,7 +102,6 @@ public class Player extends GameObject{
                 velx=(double)-10;
                 break;
             case KeyEvent.VK_SPACE:
-                spawnTracer=true;
                 break;
         }
     }
@@ -94,9 +123,4 @@ public class Player extends GameObject{
         }
     }
 
-    @Override
-    public void initBody() {
-        ogbody = new Rectangle2D.Double(x, y, 25, 50);
-    }
-    
 }

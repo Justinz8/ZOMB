@@ -21,6 +21,16 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+
+        if(key==KeyEvent.VK_L){
+            GV.scale+=0.1;
+            GV.UpdatedScale=true;
+        } 
+        if(key==KeyEvent.VK_K){
+            GV.scale-=0.1;
+            GV.UpdatedScale=true;
+        } 
+
         for(int i = 0; i<GV.GO.size(); i++){
             GV.GO.get(i).keyPressed(key);
         }

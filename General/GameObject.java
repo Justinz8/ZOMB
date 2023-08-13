@@ -1,34 +1,43 @@
 package General;
 
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+import org.w3c.dom.events.MouseEvent;
+
 
 public abstract class GameObject {
-    protected double x;
-	protected double y;
-	protected double velx;
-	protected double vely;
-	protected double rotation;
-    protected GameObjectID GOID;
+    public double x;
+	public double y;
+	public double velx;
+	public double vely;
+	public double rotation;
+    public GameObjectID GOID;
+	public GlobalVars GV;
 
-	protected Rectangle2D.Double hitbox;
+	public Rectangle2D.Double hitbox;
 
-	protected Shape ogbody;
-	protected Shape body;
+	public Polygon ogbody;
+	public Shape body;
 	
-	public GameObject(double x, double y, double vx, double vy, GameObjectID GOID) {
+	public GameObject(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV) {
 		this.x=x;
 		this.y=y;
 		velx=vx;
 		vely=vy;
         this.GOID=GOID;
-		initBody();
+		this.GV=GV;
+		UpdateScale();
 	}
+	
+	public abstract void UpdateScale();
 
-	public abstract void initBody();
+	public void initBody(){
+		ogbody.translate((int)((x-ogbody.xpoints[0]/GV.scale)*GV.scale), (int)((y-ogbody.ypoints[0]/GV.scale)*GV.scale));
+	};
 	
 	public abstract void render(Graphics2D g);
 	
@@ -48,12 +57,21 @@ public abstract class GameObject {
 
     public void mouseMoved(int mx, int my) {}
 
+	public void mouseClicked(int e) {}
+
+    public void mousePressed(int e) {}
+
+    public void mouseReleased(int e) {}
+
+    public void mouseEntered(int e) {}
+
+    public void mouseExited(int e) {}
+
     public Rectangle2D.Double getHitBox(){
 		return hitbox;
     }
 
 	public boolean IntersectHitBox(Rectangle2D n){
-		System.out.println(n.intersects(hitbox));
 		return n.intersects(hitbox);
 	}
 

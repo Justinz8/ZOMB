@@ -2,5 +2,7 @@ package General;
 
 public enum GameObjectID {
     Player(),
-    Zombie();
+    Zombie(),
+    Tracer(),
+    Gun();
 }

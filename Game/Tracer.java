@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.PriorityQueue;
 
 import General.GameObject;
 import General.GameObjectID;
@@ -16,66 +17,97 @@ public class Tracer extends GameObject {
 
     private double tickcounter;
     private double counter;
-    private GlobalVars GV;
     private double rotation;
     private Line2D line;
     private double x2, y2;
+    private double pen;
     private AffineTransform at;
     private Zombie hitzomb;
+    private double dmg;
 
-    public Tracer(double x, double y, double vx, double vy, GameObjectID GOID, double counter, GlobalVars GV, double x2, double y2) {
-        super(x, y, vx, vy, GOID);
-        this.counter=counter;
+    public class zomb implements Comparable<zomb>{
+        double dist;
+        GameObject go;
+        
+        public zomb(double dist, GameObject go){
+            this.dist=dist;
+            this.go=go;
+        }
+
+        public int compareTo(zomb o) {
+            return Double.compare(this.dist, o.dist);
+        }
+    }
+
+    public Tracer(double x, double y, GameObjectID GOID, GlobalVars GV, double x2, double y2, double length, double dmg, int pen) {
+        super(x, y, 0, 0, GOID, GV);
+        this.pen=pen;
+        this.counter=0.3;
+        this.dmg=dmg;
         tickcounter=0;
-        this.GV=GV;
+        length*=GV.scale;
         at = new AffineTransform();
+
         rotation = Math.atan2(y2-y, x2-x);
+        System.out.println(rotation);
 
         
 
-        line = new Line2D.Double(x, y, (x2-x)*1000+x, (y2-y)*1000+y);
+        line = new Line2D.Double(x, y, Math.cos(rotation)*length+x, Math.sin(rotation)*length+y);
 
-        double mindist = 1300;
+        double mindist = length;
+
+        PriorityQueue<zomb> pq = new PriorityQueue<zomb>();
 
         for(int i = 0; i<GV.GO.size(); i++){
-            if(GV.GO.get(i).getHitBox()==null||GV.GO.get(i).getGOID()==GameObjectID.Player) continue;
+            if(GV.GO.get(i).getHitBox()==null||GV.GO.get(i).getGOID()==GameObjectID.Player||GV.GO.get(i).getGOID()==GameObjectID.Tracer||GV.GO.get(i).getGOID()==GameObjectID.Gun) continue;
             if(line.intersects(GV.GO.get(i).getHitBox())){
-                double hitx = GV.GO.get(i).getx()-x;
-                double hity = GV.GO.get(i).gety()-y;
+                double hitx = (GV.GO.get(i).getHitBox().getMaxX()+GV.GO.get(i).getHitBox().getMinX())/2.0-x;
+                double hity = (GV.GO.get(i).getHitBox().getMaxY()+GV.GO.get(i).getHitBox().getMinY())/2.0-y;
 
                 double dist = Math.sqrt(hitx*hitx+hity*hity);
-                if(dist<mindist){
-                    mindist=dist;
-                    if(GV.GO.get(i).getGOID()==GameObjectID.Zombie) hitzomb=(Zombie)GV.GO.get(i);
-                }
+                pq.add(new zomb(dist, GV.GO.get(i)));
             }
         }
         //rotation = Math.atan2(y2, x2);
 
-        if(hitzomb!=null) hitzomb.hit(20);
-        at.rotate(rotation, x, y+0.5);
-        body = at.createTransformedShape(new Rectangle2D.Double(x, y, mindist, 1));
-        at.rotate(-rotation, x, y+0.5);
+        while(!pq.isEmpty()&&pen-->0&&pq.peek().go.GOID==GameObjectID.Zombie){
+            mindist = pq.peek().dist;
+            hitAction((Zombie)pq.poll().go);
+        }
+        if(pen!=0) mindist = length;
+
+        at.rotate(rotation, x*GV.scale, (y+0.5)*GV.scale);
+        body = at.createTransformedShape(new Rectangle2D.Double(x*GV.scale, y*GV.scale, mindist, 1));
+        at.rotate(-rotation, x*GV.scale, (y+0.5)*GV.scale);
+    }
+
+    public void hitAction(Zombie n){
+        n.hit(dmg);
     }
 
     @Override
     public void initBody() {
-        
     }
 
     @Override
     public void render(Graphics2D g) {
-        g.setColor(Color.white);
+        g.setColor(new Color(255, 255, 255, (int)((counter-(tickcounter/Tools.amountOfTicks))/counter*100)));
         g.fill(body);
     }
 
     @Override
     public void tick() {
         tickcounter++;
-        if(tickcounter>=counter){
+        if(tickcounter/Tools.amountOfTicks>=counter){
             this.GV.GO.remove(this);
+            tickcounter = 0;
             return;
         }
+    }
+
+    @Override
+    public void UpdateScale() {
     }
     
 }

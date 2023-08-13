@@ -17,6 +17,7 @@ public abstract class Handler {
         for(int i = 0; i<GO.size(); i++){
             GO.get(i).tick();
         }
+        if(GV.UpdatedScale==true) GV.UpdatedScale=false;
     }
     public abstract void init();
     public abstract void extraTick();
@@ -27,6 +28,7 @@ public abstract class Handler {
         for(int i = 0; i<GO.size(); i++){
             GO.get(i).render(g);
         }
+        
     }
     public abstract void extraRender(Graphics2D g);
     public abstract void background(Graphics2D g);

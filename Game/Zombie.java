@@ -2,6 +2,7 @@ package Game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -11,7 +12,6 @@ import General.*;
 
 public class Zombie extends GameObject {
 
-    private GlobalVars GV;
     private double speed;
     private Shape body;
     private double width1;
@@ -21,12 +21,14 @@ public class Zombie extends GameObject {
     private AffineTransform at;
     private double health;
 
-    public Zombie(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV, double speed) {
-        super(x, y, vx, vy, GOID);
+    public Zombie(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV, double speed, double health) {
+        super(x, y, vx, vy, GOID, GV);
         this.GV=GV;
         this.speed=speed;
         at = new AffineTransform();
-        health = 100;
+        this.health = health;
+        UpdateScale();
+        rotation(at, x+width2/2.0, y+height2/2.0);
     }
 
     public void hit(double dmg){
@@ -40,21 +42,25 @@ public class Zombie extends GameObject {
     }
 
     public void tick() {
+        if(GV.UpdatedScale) UpdateScale();
         if(health<=0){
             GV.GO.remove(this);
             return;
         }
-        initBody();
-        
+
         velx = Math.cos(rotation)*speed;
         vely = Math.sin(rotation)*speed;
 
         x+=velx;
         y+=vely;
-        
-        width2 = (ogbody.getBounds2D()).getWidth();
-        height2 = (ogbody.getBounds2D()).getHeight();
 
+        //System.out.println(x+" "+y);
+
+
+        initBody();
+        width2 = 25;
+        height2 = 50;
+        rotation(at, x+width2/2.0, y+height2/2.0);
         
         rotation = Math.atan2(GV.playerY-y, GV.playerX-x);
         rotation(at, x+width2/2.0, y+height2/2.0);
@@ -65,10 +71,15 @@ public class Zombie extends GameObject {
     }
     public void rotation(AffineTransform at, double xaxis,double yaxis){ //rotates main body and updates hitbox
                 initBody();
-                at.rotate(rotation, xaxis, yaxis);
+                at.rotate(rotation, xaxis*GV.scale, yaxis*GV.scale);
                 body=at.createTransformedShape(ogbody);
-                setHitBox((Rectangle2D.Double)body.getBounds2D());
-                at.rotate(-rotation, xaxis, yaxis);
+                Rectangle2D.Double temp = (Rectangle2D.Double)body.getBounds2D();
+                temp.x/=GV.scale;
+                temp.y/=GV.scale;
+                temp.width/=GV.scale;
+                temp.height/=GV.scale;
+                setHitBox(temp);
+                at.rotate(-rotation, xaxis*GV.scale, yaxis*GV.scale);
     }
 
     public void collision(){ 
@@ -127,9 +138,11 @@ public class Zombie extends GameObject {
         }
     }
 
-    
-    public void initBody() {
-        ogbody = new Rectangle2D.Double(x, y, 25, 50);
+    @Override
+    public void UpdateScale() {
+        int[] tempx = {(int)x, (int)(x+25*GV.scale), (int)(x+25*GV.scale), (int)x};
+        int[] tempy = {(int)y, (int)y, (int)(y+50*GV.scale), (int)(y+50*GV.scale)};
+        ogbody = new Polygon(tempx, tempy, tempx.length);
     }
     
 }

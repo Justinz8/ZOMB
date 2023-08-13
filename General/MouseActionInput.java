@@ -13,13 +13,13 @@ public class MouseActionInput implements MouseMotionListener{
 
     public void mouseDragged(MouseEvent e) {
         for(int i = 0; i<GV.GO.size(); i++){
-            GV.GO.get(i).mouseDragged(e.getX(), e.getY());
+            GV.GO.get(i).mouseDragged((int)(e.getX()/GV.scale), (int)(e.getY()/GV.scale));
         }
     }
 
     public void mouseMoved(MouseEvent e) {
         for(int i = 0; i<GV.GO.size(); i++){
-            GV.GO.get(i).mouseMoved(e.getX(), e.getY());
+            GV.GO.get(i).mouseMoved((int)(e.getX()/GV.scale), (int)(e.getY()/GV.scale));
         }
     }
 
