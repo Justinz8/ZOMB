@@ -77,16 +77,18 @@ public class Game extends Canvas implements Runnable{
         }
 
         Graphics2D g = (Graphics2D)bs.getDrawGraphics();
+        
         if(GV.UpdatedScale==true){
             at.scale(1.0/at.getScaleX(), 1.0/at.getScaleY());
             at.scale(GV.scale, GV.scale);
             GV.UpdatedScale=false;
-            
         }
+        at.translate(GV.getTransX(), GV.getTransY());
+
         g.transform(at);
 
         GV.HandlerList.get(GV.curPageID).render(g);
-
+        at.translate(-GV.getTransX(), -GV.getTransY());
         g.dispose();
         bs.show();
     }

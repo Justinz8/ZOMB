@@ -45,6 +45,9 @@ public class Tracer extends GameObject {
         this.counter=0.3;
         this.dmg=dmg;
         tickcounter=0;
+
+        x2-=GV.getTransX();
+        y2-=GV.getTransY();
         at = new AffineTransform();
 
         rotation = Math.atan2(y2-y, x2-x);

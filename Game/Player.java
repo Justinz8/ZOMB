@@ -11,7 +11,7 @@ import General.*;
 
 public class Player extends GameObject{
 
-    private int mx, my;
+    private int mx1, my1;
     private gun EquippedGun;
 
     public Player(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV) {
@@ -32,6 +32,8 @@ public class Player extends GameObject{
         g.setColor(Color.green);
 
         if(body!=null)g.fill(body);
+
+        
         
         if(getHitBox()!=null) g.draw(getHitBox());
         g.setColor(Color.yellow);
@@ -46,7 +48,16 @@ public class Player extends GameObject{
 
     @Override
     public void tick() {
+        x+=velx;
+        y+=vely;
+
         initBody();
+
+        GV.playerX=x;
+        GV.playerY=y;
+        
+        int mx = mx1-(int)GV.getTransX();
+        int my = my1-(int)GV.getTransY();
         rotation = Math.atan2(my-y, mx-x);
         at.rotate(rotation, (x+12.5), (y+25));
         body=at.createTransformedShape(ogbody);
@@ -61,25 +72,18 @@ public class Player extends GameObject{
         //System.out.println(x+" "+y+" "+temp.x+" "+temp.y);
 
         setHitBox(temp);
-
-        x+=velx;
-        y+=vely;
-
-
         initBody();
 
-        GV.playerX=x;
-        GV.playerY=y;
     }
 
     public void mouseMoved(int mx, int my) {
-        this.mx=mx;
-        this.my=my;
+        this.mx1=mx;
+        this.my1=my;
     }
 
     public void mouseDragged(int mx, int my) {
-        this.mx=mx;
-        this.my=my;
+        this.mx1=mx;
+        this.my1=my;
     }
 
     public void keyPressed(int e) {

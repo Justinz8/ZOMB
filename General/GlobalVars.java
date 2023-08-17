@@ -36,6 +36,13 @@ public class GlobalVars {
         rand = new Random();
     }
 
+    public double getTransX(){
+        return (-playerX-12.5+Tools.WIDTH/2.0/scale);
+    }
+    public double getTransY(){
+        return (-playerY-25+Tools.HEIGHT/2.0/scale);
+    }
+
     public boolean roll(int percentChance){
         if(rand.nextInt(100)<=percentChance) return true;
         return false;
