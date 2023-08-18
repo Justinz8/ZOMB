@@ -46,7 +46,7 @@ public class Tracer extends GameObject {
         this.dmg=dmg;
         tickcounter=0;
 
-        this.dmg*=(GV.Inventory.get("Chicken")/10.0)+1;
+        this.dmg*=GV.dmgMult;
         System.out.println(this.dmg);
 
         x2-=GV.getTransX();

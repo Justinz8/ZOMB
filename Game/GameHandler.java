@@ -1,6 +1,7 @@
 package Game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -14,21 +15,17 @@ public class GameHandler extends Handler {
     private boolean spawn;
     private int tickcounter;
     private double count;
+    private boolean InvMenu;
 
     public GameHandler(ArrayList<GameObject> GO, GlobalVars GV) {
         super(GO, GV);
         tickcounter = 0;
         count = 5;
+        InvMenu=false;
     }
 
 
     public void extraTick() {
-        tickcounter++;
-        if(tickcounter/Tools.amountOfTicks>=count){
-            tickcounter = 0;
-            spawnWave();
-        }
-
 
     }
 
@@ -46,6 +43,8 @@ public class GameHandler extends Handler {
 
 
     public void init() {
+        GV.dmgMult=1;
+        GV.InvMenu=false;
         //spawnWave();
         //GV.GO.add(new Zombie(400, 400, 0, 0, GameObjectID.Zombie, GV, 2.5, 60));
         // GV.GO.add(new Zombie(400, 600, 0, 0, GameObjectID.Zombie, GV, 2.5));
@@ -74,6 +73,37 @@ public class GameHandler extends Handler {
                     GV.GO.add(new Zombie(GV.playerX-1000, tempy, 0, 0, GameObjectID.Zombie, GV, 2.5, 60));
                     break;
             }
+        }
+    }
+
+
+    public void PriorityTick() {
+        InvMenu = GV.InvMenu;
+        tickcounter++;
+        if(tickcounter/Tools.amountOfTicks>=count){
+            tickcounter = 0;
+            spawnWave();
+        }
+    }
+
+    public void PriorityRender(Graphics2D g) {
+        if(InvMenu){
+            Inventory(g);
+        }
+    }
+
+    public void Inventory(Graphics2D g){
+        g.setColor(new Color(0, 0, 0, 150));
+        g.fillRect(100-(int)GV.getTransX(), 100-(int)GV.getTransY(), Tools.WIDTH-200, Tools.HEIGHT-200);
+        g.setColor(Color.white);
+        g.setFont(new Font("Serif", Font.BOLD, 40));
+        g.drawString("Damage x: "+GV.dmgMult, 150-(int)GV.getTransX(), 150-(int)GV.getTransY());
+        for(int i = 0; i<GV.Inventory.size(); i++){
+            int x = 150-(int)GV.getTransX();
+            int y = 200+i*50-(int)GV.getTransY();
+            String ItemName = (String)GV.Inventory.keySet().toArray()[i];
+            g.drawString(ItemName, x, y);
+            g.drawString(""+GV.Inventory.get(ItemName), x+500, y);
         }
     }
 }

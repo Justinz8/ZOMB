@@ -31,6 +31,10 @@ public class KeyInput implements KeyListener {
             GV.UpdatedScale=true;
         } 
 
+        if(key==KeyEvent.VK_I){
+            GV.InvMenu=true;
+        }
+
         for(int i = 0; i<GV.GO.size(); i++){
             GV.GO.get(i).keyPressed(key);
         }
@@ -39,6 +43,9 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
+        if(key==KeyEvent.VK_I){
+            GV.InvMenu=false;
+        }
         for(int i = 0; i<GV.GO.size(); i++){
             GV.GO.get(i).keyReleased(key);
         }

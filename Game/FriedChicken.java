@@ -20,5 +20,9 @@ public class FriedChicken extends Item {
 
     public void Picked() {
         GV.Inventory.put("Chicken", GV.Inventory.get("Chicken")+1);
+        GV.dmgMult=GV.dmgMult+(double)0.1;        
+        GV.dmgMult=(int)(GV.dmgMult*1000)/1000.0;
     }
+    
+
 }

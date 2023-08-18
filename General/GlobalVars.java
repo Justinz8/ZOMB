@@ -8,6 +8,7 @@ import java.util.Random;
 import Game.GameHandler;
 
 public class GlobalVars {
+    //General GLobal Variables
     public PageID curPageID;
 
     public ArrayList<GameObject> GO;
@@ -16,6 +17,7 @@ public class GlobalVars {
 
     public boolean running;
 
+    //Game Global Variables
     public double playerX, playerY;
 
     public Random rand;
@@ -27,6 +29,10 @@ public class GlobalVars {
     public Rectangle2D.Double playHitBox;
 
     public HashMap<String, Integer> Inventory;
+
+    public boolean InvMenu;
+
+    public double dmgMult;
 
     public void ChangePage(PageID n){
         GO.clear();
@@ -41,6 +47,7 @@ public class GlobalVars {
         HandlerListInit();
         rand = new Random();
 
+        
         Inventory.put("Chicken", 0);
     }
 
