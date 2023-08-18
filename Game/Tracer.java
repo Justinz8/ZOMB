@@ -46,6 +46,9 @@ public class Tracer extends GameObject {
         this.dmg=dmg;
         tickcounter=0;
 
+        this.dmg*=(GV.Inventory.get("Chicken")/10.0)+1;
+        System.out.println(this.dmg);
+
         x2-=GV.getTransX();
         y2-=GV.getTransY();
         at = new AffineTransform();
@@ -60,7 +63,7 @@ public class Tracer extends GameObject {
         PriorityQueue<zomb> pq = new PriorityQueue<zomb>();
 
         for(int i = 0; i<GV.GO.size(); i++){
-            if(GV.GO.get(i).getHitBox()==null||GV.GO.get(i).getGOID()==GameObjectID.Player||GV.GO.get(i).getGOID()==GameObjectID.Tracer||GV.GO.get(i).getGOID()==GameObjectID.Gun) continue;
+            if(GV.GO.get(i).getHitBox()==null||GV.GO.get(i).getGOID()==GameObjectID.Player||GV.GO.get(i).getGOID()==GameObjectID.Tracer||GV.GO.get(i).getGOID()==GameObjectID.Gun||GV.GO.get(i).getGOID()==GameObjectID.Item) continue;
             if(line.intersects(GV.GO.get(i).getHitBox())){
                 double hitx = (GV.GO.get(i).getHitBox().getMaxX()+GV.GO.get(i).getHitBox().getMinX())/2.0-x;
                 double hity = (GV.GO.get(i).getHitBox().getMaxY()+GV.GO.get(i).getHitBox().getMinY())/2.0-y;

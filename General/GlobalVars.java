@@ -1,5 +1,6 @@
 package General;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -23,6 +24,10 @@ public class GlobalVars {
 
     public boolean UpdatedScale;
 
+    public Rectangle2D.Double playHitBox;
+
+    public HashMap<String, Integer> Inventory;
+
     public void ChangePage(PageID n){
         GO.clear();
         curPageID=n;
@@ -31,16 +36,19 @@ public class GlobalVars {
 
     public GlobalVars(){
         GO = new ArrayList<GameObject>();
+        Inventory = new HashMap<String, Integer>();
         HandlerList = new HashMap<PageID, GameHandler>();
         HandlerListInit();
         rand = new Random();
+
+        Inventory.put("Chicken", 0);
     }
 
     public double getTransX(){
-        return (-playerX-12.5+Tools.WIDTH/2.0/scale);
+        return (-playerX+Tools.WIDTH/2.0/scale);
     }
     public double getTransY(){
-        return (-playerY-25+Tools.HEIGHT/2.0/scale);
+        return (-playerY+Tools.HEIGHT/2.0/scale);
     }
 
     public boolean roll(int percentChance){

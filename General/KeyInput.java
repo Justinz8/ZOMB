@@ -22,11 +22,11 @@ public class KeyInput implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if(key==KeyEvent.VK_L){
+        if(key==KeyEvent.VK_L&&GV.scale<1.2){
             GV.scale+=0.1;
             GV.UpdatedScale=true;
         } 
-        if(key==KeyEvent.VK_K){
+        if(key==KeyEvent.VK_K&&GV.scale>0.7){
             GV.scale-=0.1;
             GV.UpdatedScale=true;
         } 

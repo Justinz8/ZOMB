@@ -18,8 +18,8 @@ public abstract class gun extends GameObject {
     
 
     
-    public gun(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV, double delay, boolean automatic) {
-        super(x, y, vx, vy, GOID, GV);
+    public gun(double x, double y, GameObjectID GOID, GlobalVars GV, double delay, boolean automatic) {
+        super(x, y, 0, 0, GOID, GV);
         this.GV=GV;
         this.delay=delay;
         this.automatic=automatic;

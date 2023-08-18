@@ -46,6 +46,9 @@ public class Zombie extends GameObject {
     public void tick() {
         if(health<=0){
             GV.GO.remove(this);
+            if(GV.rand.nextInt(100)<50){
+                GV.GO.add(new FriedChicken(x, y, GV));
+            }
             return;
         }
 
@@ -81,8 +84,7 @@ public class Zombie extends GameObject {
 
     public void collision(){ 
         for(int i = 0; i<GV.GO.size(); i++){
-            if(this==GV.GO.get(i)) continue;
-            if(GV.GO.get(i).getHitBox()==null) continue;
+            if(this==GV.GO.get(i)||GV.GO.get(i).getHitBox()==null||GV.GO.get(i).GOID==GameObjectID.Item) continue;
             //System.out.println(GV.GO.get(i).getHitBox().intersects(getHitBox()));
             if(GV.GO.get(i).getHitBox().intersects(getHitBox())){
                 //going left and hitting left target

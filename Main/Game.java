@@ -79,7 +79,7 @@ public class Game extends Canvas implements Runnable{
         Graphics2D g = (Graphics2D)bs.getDrawGraphics();
         
         if(GV.UpdatedScale==true){
-            at.scale(1.0/at.getScaleX(), 1.0/at.getScaleY());
+            at.setTransform(new AffineTransform());
             at.scale(GV.scale, GV.scale);
             GV.UpdatedScale=false;
         }

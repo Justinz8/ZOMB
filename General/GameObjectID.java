@@ -4,5 +4,6 @@ public enum GameObjectID {
     Player(),
     Zombie(),
     Tracer(),
-    Gun();
+    Gun(),
+    Item();
 }

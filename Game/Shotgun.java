@@ -9,7 +9,7 @@ import General.GlobalVars;
 public class Shotgun extends gun {
 
     public Shotgun(double x, double y, GameObjectID GOID, GlobalVars GV) {
-        super(x, y, 0, 0, GOID, GV, 0.25, true);
+        super(x, y, GOID, GV, 0.25, true);
         int[] tempx = {(int)x, (int)x+30, (int)x+30, (int)x};
         int[] tempy = {(int)y, (int)y, (int)y+7, (int)y+7};
         ogbody = new Polygon(tempx, tempy, tempx.length);

@@ -50,12 +50,14 @@ public class Player extends GameObject{
     public void tick() {
         x+=velx;
         y+=vely;
+        x=Tools.clamp(-5000, 5000, x);
+        y=Tools.clamp(-5000, 5000, y);
 
         initBody();
 
         GV.playerX=x;
         GV.playerY=y;
-        
+
         int mx = mx1-(int)GV.getTransX();
         int my = my1-(int)GV.getTransY();
         rotation = Math.atan2(my-y, mx-x);
@@ -72,6 +74,7 @@ public class Player extends GameObject{
         //System.out.println(x+" "+y+" "+temp.x+" "+temp.y);
 
         setHitBox(temp);
+        GV.playHitBox=temp;
         initBody();
 
     }
@@ -88,16 +91,16 @@ public class Player extends GameObject{
 
     public void keyPressed(int e) {
         switch(e){
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
                 vely=(double)-10;
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
                 vely=(double)10;
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
                 velx=(double)10;
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 velx=(double)-10;
                 break;
             case KeyEvent.VK_SPACE:
@@ -107,16 +110,16 @@ public class Player extends GameObject{
 
     public void keyReleased(int e) {
         switch(e){
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
                 vely=Math.max(vely, 0);
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
                 vely=Math.min(vely, 0);
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
                 velx=Math.min(velx, 0);
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 velx=Math.max(velx, 0);
                 break;
         }
