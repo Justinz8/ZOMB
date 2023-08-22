@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
+import Game.Guns.*;
 import General.*;
 
 public class Player extends GameObject{

@@ -22,6 +22,7 @@ public class GameHandler extends Handler {
         tickcounter = 0;
         count = 5;
         InvMenu=false;
+        GV.Money=0;
     }
 
 
@@ -61,16 +62,16 @@ public class GameHandler extends Handler {
             double tempy = GV.rand.nextInt(Tools.HEIGHT)-Tools.HEIGHT/2.0+GV.playerY;
             switch(temp){
                 case 0:
-                    GV.GO.add(new Zombie(tempx, GV.playerY-800, 0, 0, GameObjectID.Zombie, GV, 2.5, 60));
+                    GV.GO.add(new Zombie(tempx, GV.playerY-800, 0, 0, GV, 2.5, 60));
                     break;
                 case 1:
-                    GV.GO.add(new Zombie(tempx, GV.playerY+800, 0, 0, GameObjectID.Zombie, GV, 2.5, 60));
+                    GV.GO.add(new Zombie(tempx, GV.playerY+800, 0, 0, GV, 2.5, 60));
                     break;
                 case 2:
-                    GV.GO.add(new Zombie(GV.playerX+1000, tempy, 0, 0, GameObjectID.Zombie, GV, 2.5, 60));
+                    GV.GO.add(new Zombie(GV.playerX+1000, tempy, 0, 0, GV, 2.5, 60));
                     break;
                 case 3:
-                    GV.GO.add(new Zombie(GV.playerX-1000, tempy, 0, 0, GameObjectID.Zombie, GV, 2.5, 60));
+                    GV.GO.add(new Zombie(GV.playerX-1000, tempy, 0, 0, GV, 2.5, 60));
                     break;
             }
         }

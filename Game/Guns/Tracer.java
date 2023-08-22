@@ -1,4 +1,4 @@
-package Game;
+package Game.Guns;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,6 +7,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.PriorityQueue;
 
+import Game.Zombie;
 import General.GameObject;
 import General.GameObjectID;
 import General.GlobalVars;
@@ -47,7 +48,6 @@ public class Tracer extends GameObject {
         tickcounter=0;
 
         this.dmg*=GV.dmgMult;
-        System.out.println(this.dmg);
 
         x2-=GV.getTransX();
         y2-=GV.getTransY();

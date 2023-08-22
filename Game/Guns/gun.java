@@ -1,4 +1,4 @@
-package Game;
+package Game.Guns;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;

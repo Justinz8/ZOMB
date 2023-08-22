@@ -8,6 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 
+import Game.Items.*;
 import General.*;
 
 public class Zombie extends GameObject {
@@ -21,9 +22,8 @@ public class Zombie extends GameObject {
     private AffineTransform at;
     private double health;
 
-    public Zombie(double x, double y, double vx, double vy, GameObjectID GOID, GlobalVars GV, double speed, double health) {
-        super(x, y, vx, vy, GOID, GV);
-        this.GV=GV;
+    public Zombie(double x, double y, double vx, double vy, GlobalVars GV, double speed, double health) {
+        super(x, y, vx, vy, GameObjectID.Zombie, GV);
         this.speed=speed;
         at = new AffineTransform();
         this.health = health;
@@ -49,6 +49,7 @@ public class Zombie extends GameObject {
             if(GV.rand.nextInt(100)<50){
                 GV.GO.add(new FriedChicken(x, y, GV));
             }
+            GV.Money+=20;
             return;
         }
 
@@ -59,7 +60,6 @@ public class Zombie extends GameObject {
         y+=vely;
 
         //System.out.println(x+" "+y);
-
 
         initBody();
         width2 = 25;

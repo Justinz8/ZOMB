@@ -9,10 +9,8 @@ import General.GlobalVars;
 
 public class Window extends WindowAdapter {
     
-    private Game game;
     private GlobalVars GV;
     public Window(String name, Game game, GlobalVars GV, int width, int height){
-        this.game=game;
         this.GV=GV;
         JFrame frame = new JFrame(name);
 
